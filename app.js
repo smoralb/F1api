@@ -9,4 +9,8 @@ app.get('/', (req, res) => {
     res.send("Hello World again")
 })
 
+app.get('/index', (req, res) => {
+    res.sendFile(__dirname + '/index.html')
+})
+
 app.listen(DEFAULT_PORT, () => console.log('Server started'))
