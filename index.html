@@ -5,6 +5,14 @@
   <title>MY APP</title>
 </head>
 <body>
-  <h1> This is a index html test. </h1>
+    <!-- 
+        method -> Tells browser what kind of request to send. (POST)
+        action -> Where to send the post. (/teams)
+     -->
+    <form action="/teams" method="POST">
+        <input type="text" placeholder="Team name" name="name">
+        <input type="text" placeholder="Team color" name="color">
+        <button type="submit">Submit</button>
+      </form>
 </body>
 </html>
