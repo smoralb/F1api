@@ -1,13 +1,12 @@
-const express = require('express')
+const DEFAULT_PORT = 3000
 
+const express = require('express')
+const res = require('express/lib/response')
 const app = express()
-const port = 3000
 
 //ROUTES
-
 app.get('/', (req, res) => {
-    res.send("Hello World!")
+    res.send("Hello World again")
 })
 
-
-app.listen(port)
+app.listen(DEFAULT_PORT, () => console.log('Server started'))
