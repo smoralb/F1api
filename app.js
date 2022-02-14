@@ -25,6 +25,10 @@ mongoClient
   .then((client) => {
     console.log("Connected to DB");
     const db = client.db("F1-api");
+
+    //COLLECTIONS
+    const teamsCollection = db.collection("teams");
+
     /*
     The urlencoded method within body-parser tells body-parser to extract data from 
     the <form> element and add them to the body property in the request object.
@@ -44,7 +48,10 @@ mongoClient
     });
 
     app.post("/teams", (req, res) => {
-      console.log(req.body);
+      teamsCollection
+        .insertOne(req.body)
+        .then(res.redirect("/"))
+        .catch((error) => console.error(error));
     });
 
     app.listen(DEFAULT_PORT, () => console.log("Server started"));
