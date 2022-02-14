@@ -40,7 +40,16 @@ mongoClient
     //ROUTES
 
     app.get("/", (req, res) => {
-      res.send("Hello World again");
+      const cursor = db
+        .collection("teams")
+        .find()
+        .toArray()
+        .then((results) => {
+          console.log(results.json());
+        })
+        .then(res.send("alo"))
+        .catch((error) => console.log(error));
+      console.log(cursor);
     });
 
     app.get("/index", (req, res) => {
