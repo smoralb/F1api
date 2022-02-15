@@ -5,6 +5,7 @@ require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoClient = require("mongodb").MongoClient;
+var ObjectId = require("mongodb").ObjectId;
 
 //Creates an express application
 const app = express();
@@ -36,30 +37,56 @@ mongoClient
     That's because Express does not read data from the form.
     */
     app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.json());
 
     //ROUTES
 
     app.get("/", (req, res) => {
-      const cursor = db
-        .collection("teams")
+      teamsCollection
         .find()
         .toArray()
         .then((results) => {
-          console.log(results.json());
+          res.send(results);
         })
-        .then(res.send("alo"))
         .catch((error) => console.log(error));
-      console.log(cursor);
     });
 
-    app.get("/index", (req, res) => {
+    app.get("/form", (req, res) => {
       res.sendFile(__dirname + "/index.html");
+    });
+
+    app.get("/:id", (req, res) => {
+      teamsCollection
+        .find(ObjectId(req.params.id))
+        .toArray()
+        .then((results) => {
+          res.send(results);
+        })
+        .catch((error) => console.error(error));
     });
 
     app.post("/teams", (req, res) => {
       teamsCollection
         .insertOne(req.body)
         .then(res.redirect("/"))
+        .catch((error) => console.error(error));
+    });
+
+    app.put("/update/:id", (req, res) => {
+      console.log(req.body);
+      teamsCollection
+        .updateOne(
+          { _id: ObjectId(req.params.id) },
+          { $set: { name: req.body.name, color: req.body.color } }
+        )
+        .then(res.send("Element updated"))
+        .catch((error) => console.error(error));
+    });
+
+    app.delete("/:id", (req, res) => {
+      teamsCollection
+        .deleteOne({ _id: ObjectId(req.params.id) })
+        .then(res.send("Element deleted"))
         .catch((error) => console.error(error));
     });
 

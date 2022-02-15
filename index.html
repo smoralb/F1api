@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>MY APP</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>MY APP</title>
+  </head>
+  <body>
     <!-- 
         method -> Tells browser what kind of request to send. (POST)
         action -> Where to send the post. (/teams)
      -->
     <form action="/teams" method="POST">
-        <input type="text" placeholder="Team name" name="name">
-        <input type="text" placeholder="Team color" name="color">
-        <button type="submit">Submit</button>
-      </form>
-</body>
+      <input id="tem_name" type="text" placeholder="Team name" name="name" />
+      <input
+        id="team_color"
+        type="text"
+        placeholder="Team color"
+        name="color"
+      />
+      <button type="submit">Submit</button>
+    </form>
+  </body>
 </html>
