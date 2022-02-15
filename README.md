@@ -43,3 +43,7 @@ Here is all the [documentation](https://marketplace.visualstudio.com/items?itemN
 Create a CRUD api with Express and Mongo
 
 https://zellwk.com/blog/crud-express-mongodb/
+
+All Mongo db operations
+
+https://www.w3schools.com/nodejs/nodejs_mongodb_delete.asp
