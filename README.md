@@ -42,6 +42,10 @@ Here is all the [documentation](https://marketplace.visualstudio.com/items?itemN
 
 ![image](https://user-images.githubusercontent.com/21090916/154352059-c39b4528-74c3-4ba6-b25d-a7535286af70.png)
 
+- app.js -> Contains the connection to mongoose and all the configuration for the connection.
+- routes -> Contains all the routes for our api. It will be diferentiated by collections.
+- controller -> Conatins all the logic to resolve the different operations (Create, Read, Update, Delete)
+- models -> Contains all the Schemas that it will be used for the different operations.
 
 ## Docu
 
