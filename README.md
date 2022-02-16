@@ -38,6 +38,11 @@ For this, I have used the extension REST Client for Visual Studio Code. With tha
 
 Here is all the [documentation](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
 
+## Architecture
+
+![image](https://user-images.githubusercontent.com/21090916/154351937-9a55ba94-43f0-40af-8778-ad465a83bb67.png)
+
+
 ## Docu
 
 Create a CRUD api with Express and Mongo
