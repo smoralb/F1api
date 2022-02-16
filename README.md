@@ -40,7 +40,7 @@ Here is all the [documentation](https://marketplace.visualstudio.com/items?itemN
 
 ## Architecture
 
-![image](https://user-images.githubusercontent.com/21090916/154351937-9a55ba94-43f0-40af-8778-ad465a83bb67.png)
+![image](https://user-images.githubusercontent.com/21090916/154352059-c39b4528-74c3-4ba6-b25d-a7535286af70.png)
 
 
 ## Docu
