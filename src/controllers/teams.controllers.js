@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const app = require("../../app");
+const teams = require("../models/teams");
 var ObjectId = require("mongodb").ObjectId;
 const Team = require("../models/teams");
 
@@ -44,7 +45,13 @@ const updateTeamById = (req, res) => {
 
 const deteleTeamById = (req, res) => {
   Team.deleteOne({ _id: req.params.id })
-    .then(res.send("Element deleted"))
+    .then((itemsDeleted) => {
+      if (itemsDeleted.deletedCount == 0) {
+        res.status(410).json({ message: "Este item ya ha sido eliminado" });
+      } else {
+        res.status(200).json({ message: "Item eliminado correctamente" });
+      }
+    })
     .catch((error) => console.error(error));
 };
 

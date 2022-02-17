@@ -11,8 +11,6 @@ mongoose
   .then(console.log("Connected to Database"))
   .catch((error) => console.error(error));
 
-mongoose.Promise = global.Promise;
-
 /*
   The urlencoded method within body-parser tells body-parser to extract data from 
   the <form> element and add them to the body property in the request object.
