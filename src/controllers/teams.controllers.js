@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { response } = require("../../app");
 const app = require("../../app");
 const teams = require("../models/teams");
 var ObjectId = require("mongodb").ObjectId;
@@ -39,21 +40,31 @@ const updateTeamById = (req, res) => {
     { _id: ObjectId(req.params.id) },
     { $set: { name: req.body.name, color: req.body.color } }
   )
-    .then((result) => res.send(result))
+    .then((response) => {
+      if (response.matchedCount == 0) {
+        getResponse(res, 410, "No se ha econtrado ese elemento");
+      } else if (response.modifedCount == 0) {
+        getResponse(res, 500, "No se ha podido modificar el elemento");
+      } else getResponse(res, 200, "Elemento correctamente actualizado");
+    })
     .catch((error) => console.error(error));
 };
 
 const deteleTeamById = (req, res) => {
   Team.deleteOne({ _id: req.params.id })
-    .then((itemsDeleted) => {
-      if (itemsDeleted.deletedCount == 0) {
-        res.status(410).json({ message: "Este item ya ha sido eliminado" });
+    .then((response) => {
+      if (response.deletedCount == 0) {
+        getResponse(res, 410, "Este item ya ha sido eliminado");
       } else {
-        res.status(200).json({ message: "Item eliminado correctamente" });
+        getResponse(res, 200, "Item eliminado correctamente");
       }
     })
     .catch((error) => console.error(error));
 };
+
+function getResponse(res, code, responseMessage) {
+  return res.status(code).json({ message: responseMessage });
+}
 
 module.exports = {
   getTeams,
