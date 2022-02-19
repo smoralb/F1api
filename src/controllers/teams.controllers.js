@@ -1,29 +1,21 @@
-const mongoose = require("mongoose");
-const { response } = require("../../app");
-const app = require("../../app");
-const teams = require("../models/teams");
 var ObjectId = require("mongodb").ObjectId;
 const Team = require("../models/teams");
 
 const getTeams = (req, res) => {
   Team.find()
     .exec()
-    .then((result) => {
-      console.log(result);
-      if (result) {
-        res.send(result);
-      } else {
-        res.status(400).json({ message: "Bad request" });
-      }
-    })
-    .catch((error) => console.log(error));
+    .then(res.send(result))
+    .catch((error) => {
+      res.status(error.code).json({ message: error.message });
+    });
 };
 
-const getTeamById = async (req, res) => {
-  await Team.findById(ObjectId(req.params.id))
-    .exec()
+const getTeamById = (req, res) => {
+  Team.findById(ObjectId(req.team.id))
     .then((result) => res.send(result))
-    .catch((error) => console.error(error));
+    .catch((error) => {
+      res.status(error.code).json({ message: error.message });
+    });
 };
 
 const addTeamForm = (req, res) => {
@@ -37,7 +29,9 @@ const addTeam = (req, res) => {
   })
     .save()
     .then((result) => res.send(result))
-    .catch((error) => console.error(error));
+    .catch((error) => {
+      res.status(error.code).json({ message: error.message });
+    });
 };
 
 const updateTeamById = (req, res) => {
@@ -46,7 +40,7 @@ const updateTeamById = (req, res) => {
     { $set: { name: req.body.name, color: req.body.color } }
   )
     .then((result) => {
-      if (response.modifedCount == 0) {
+      if (result.modifedCount == 0) {
         res.status(410).json({ message: "Item could not be modified" });
       } else res.send(result);
     })
@@ -57,8 +51,8 @@ const updateTeamById = (req, res) => {
 
 const deteleTeamById = (req, res) => {
   Team.deleteOne({ _id: req.params.id })
-    .then((response) => {
-      if (response.deletedCount == 0) {
+    .then((result) => {
+      if (result.deletedCount == 0) {
         res.status(410).json({ message: "This item is already deleted" });
       } else res.status(204);
     })
