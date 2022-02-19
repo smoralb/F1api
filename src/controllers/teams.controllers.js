@@ -8,8 +8,13 @@ const Team = require("../models/teams");
 const getTeams = (req, res) => {
   Team.find()
     .exec()
-    .then((results) => {
-      res.send(results);
+    .then((result) => {
+      console.log(result);
+      if (result) {
+        res.send(result);
+      } else {
+        res.status(400).json({ message: "Bad request" });
+      }
     })
     .catch((error) => console.log(error));
 };
@@ -40,31 +45,27 @@ const updateTeamById = (req, res) => {
     { _id: ObjectId(req.params.id) },
     { $set: { name: req.body.name, color: req.body.color } }
   )
-    .then((response) => {
-      if (response.matchedCount == 0) {
-        getResponse(res, 410, "No se ha econtrado ese elemento");
-      } else if (response.modifedCount == 0) {
-        getResponse(res, 500, "No se ha podido modificar el elemento");
-      } else getResponse(res, 200, "Elemento correctamente actualizado");
+    .then((result) => {
+      if (response.modifedCount == 0) {
+        res.status(410).json({ message: "Item could not be modified" });
+      } else res.send(result);
     })
-    .catch((error) => console.error(error));
+    .catch((error) => {
+      res.status(error.code).json({ message: error.message });
+    });
 };
 
 const deteleTeamById = (req, res) => {
   Team.deleteOne({ _id: req.params.id })
     .then((response) => {
       if (response.deletedCount == 0) {
-        getResponse(res, 410, "Este item ya ha sido eliminado");
-      } else {
-        getResponse(res, 200, "Item eliminado correctamente");
-      }
+        res.status(410).json({ message: "This item is already deleted" });
+      } else res.status(204);
     })
-    .catch((error) => console.error(error));
+    .catch((error) => {
+      res.status(error.code).json({ message: error.message });
+    });
 };
-
-function getResponse(res, code, responseMessage) {
-  return res.status(code).json({ message: responseMessage });
-}
 
 module.exports = {
   getTeams,
