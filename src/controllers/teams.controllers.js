@@ -1,22 +1,21 @@
-const mongoose = require("mongoose");
-const app = require("../../app");
 var ObjectId = require("mongodb").ObjectId;
 const Team = require("../models/teams");
 
 const getTeams = (req, res) => {
   Team.find()
     .exec()
-    .then((results) => {
-      res.send(results);
-    })
-    .catch((error) => console.log(error));
+    .then(res.send(result))
+    .catch((error) => {
+      res.status(error.code).json({ message: error.message });
+    });
 };
 
-const getTeamById = async (req, res) => {
-  await Team.findById(ObjectId(req.params.id))
-    .exec()
+const getTeamById = (req, res) => {
+  Team.findById(ObjectId(req.team.id))
     .then((result) => res.send(result))
-    .catch((error) => console.error(error));
+    .catch((error) => {
+      res.status(error.code).json({ message: error.message });
+    });
 };
 
 const addTeamForm = (req, res) => {
@@ -30,7 +29,9 @@ const addTeam = (req, res) => {
   })
     .save()
     .then((result) => res.send(result))
-    .catch((error) => console.error(error));
+    .catch((error) => {
+      res.status(error.code).json({ message: error.message });
+    });
 };
 
 const updateTeamById = (req, res) => {
@@ -38,14 +39,26 @@ const updateTeamById = (req, res) => {
     { _id: ObjectId(req.params.id) },
     { $set: { name: req.body.name, color: req.body.color } }
   )
-    .then((result) => res.send(result))
-    .catch((error) => console.error(error));
+    .then((result) => {
+      if (result.modifedCount == 0) {
+        res.status(410).json({ message: "Item could not be modified" });
+      } else res.send(result);
+    })
+    .catch((error) => {
+      res.status(error.code).json({ message: error.message });
+    });
 };
 
 const deteleTeamById = (req, res) => {
   Team.deleteOne({ _id: req.params.id })
-    .then(res.send("Element deleted"))
-    .catch((error) => console.error(error));
+    .then((result) => {
+      if (result.deletedCount == 0) {
+        res.status(410).json({ message: "This item is already deleted" });
+      } else res.status(204);
+    })
+    .catch((error) => {
+      res.status(error.code).json({ message: error.message });
+    });
 };
 
 module.exports = {
