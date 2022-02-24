@@ -2,8 +2,14 @@ const mongoose = require("mongoose");
 
 const teamSchema = new mongoose.Schema(
   {
-    name: String,
-    color: String,
+    name: {
+      type: String,
+      required: true,
+    },
+    color: {
+      type: String,
+      required: true,
+    },
   },
   { versionKey: false }
 );
