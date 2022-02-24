@@ -4,7 +4,7 @@ const Team = require("../models/teams");
 const getTeams = (req, res) => {
   Team.find()
     .exec()
-    .then(res.send(result))
+    .then((result) => res.send(result))
     .catch((error) => {
       res.status(error.code).json({ message: error.message });
     });
